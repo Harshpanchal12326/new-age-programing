@@ -7,7 +7,9 @@ import (
 )
 
 func main() {
-	var  str string	
+	
+	fmt.Println("===== String Utilities =====")
+	var str string
 	fmt.Print("Enter a string: ")
 	fmt.Scan(&str)
 
@@ -16,7 +18,7 @@ func main() {
 	fmt.Printf("Vowel count: %d\n\n", strop.CountVowels(str))
 
 	
-	fmt.Println("+Math Utilities")
+	fmt.Println("===== Math Utilities =====")
 	var num int
 	fmt.Print("Enter a number for Factorial: ")
 	fmt.Scan(&num)
