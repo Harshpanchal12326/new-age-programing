@@ -3,22 +3,29 @@ package main
 import (
 	"fmt"
 	"LAB2/mathutil"
+	"LAB2/strop"
 )
 
 func main() {
-	var a int
-	var b int
+	var  str string	
+	fmt.Print("Enter a string: ")
+	fmt.Scan(&str)
 
-	fmt.Print("enter number 1 :")
-	fmt.Scan(&a)
+	fmt.Printf("Original string: %s\n", str)
+	fmt.Printf("Reversed string: %s\n", strop.Reverse(str))
+	fmt.Printf("Vowel count: %d\n\n", strop.CountVowels(str))
 
-	fmt.Print("enter number 2 :")
-	fmt.Scan(&b)
+	
+	fmt.Println("+Math Utilities")
+	var num int
+	fmt.Print("Enter a number for Factorial: ")
+	fmt.Scan(&num)
+	fmt.Printf("Factorial of %d is: %d\n\n", num, mathutil.Factorial(num))
 
-	fmt.Printf("sum is = %d\n", mathutil.Add(a, b))
-}
-
-func PrintStr(s string){
-	fmt.Println(s)
-
+	var base, exp int
+	fmt.Print("Enter base: ")
+	fmt.Scan(&base)
+	fmt.Print("Enter exponent: ")
+	fmt.Scan(&exp)
+	fmt.Printf("%d to the power of %d is: %d\n", base, exp, mathutil.Power(base, exp))
 }

@@ -1,5 +1,20 @@
 package mathutil
-func Add(num1, num2 int)int {
-	sum:= num1 + num2
-	return sum
+
+
+
+
+
+func Factorial(n int) int {
+	if n <= 1 {
+		return 1
+	}
+	return n * Factorial(n-1)
+}
+
+func Power(base int, exp int) int {
+	result := 1
+	for i := 0; i < exp; i++ {
+		result *= base
+	}
+	return result
 }
