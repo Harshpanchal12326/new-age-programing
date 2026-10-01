@@ -2,40 +2,48 @@ package main
 
 import "fmt"
 
-
 type Student struct {
 	Name string
 	Age  int
 }
 
+func inputNumber(ptr *int) {
+	*ptr = 50
+}
 
 func modifyValue(ptr *int) {
 	*ptr = *ptr + 10
 }
 
-func main() {
-	
-	fmt.Println("\n (1) Pointer Referencing & Dereferencing ")
-	var num int = 25
-	var ptr *int = &num
+func inputStudent(s *Student) {
+	fmt.Print("Enter Student Name: ")
+	fmt.Scan(&s.Name)
+	fmt.Print("Enter Student Age: ")
+	fmt.Scan(&s.Age)
+}
 
+func main() {
+	var num int
+	inputNumber(&num)
+
+	var ptr *int = &num
 	fmt.Println("Original Value:", num)
 	fmt.Println("Address using &:", ptr)
 	fmt.Println("Value accessed using *:", *ptr)
 
 	
-	fmt.Println("\n (2) Pass-by-Reference using Pointer ")
-	var count int = 50
+	var count int
+	inputNumber(&count)
 	fmt.Println("Value before modifyValue():", count)
 	modifyValue(&count)
 	fmt.Println("Value after modifyValue():", count)
 
-	
-	fmt.Println("\n (3) Struct Allocation using new() ")
 	s := new(Student)
-	s.Name = "HARSH"
-	s.Age = 21
+	fmt.Println("Default Student Name:", s.Name)
+	fmt.Println("Default Student Age:", s.Age)
 
-	fmt.Println("Student Name:", s.Name)
-	fmt.Println("Student Age:", s.Age)
+	inputStudent(s)
+
+	fmt.Println("Modified Student Name:", s.Name)
+	fmt.Println("Modified Student Age:", s.Age)
 }
