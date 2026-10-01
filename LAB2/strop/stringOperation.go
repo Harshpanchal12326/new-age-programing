@@ -1,6 +1,6 @@
 package strop
 
-// Reverse reverses a string using a simple loop
+
 func Reverse(s string) string {
 	reversed := ""
 	for i := len(s) - 1; i >= 0; i-- {
@@ -9,7 +9,7 @@ func Reverse(s string) string {
 	return reversed
 }
 
-// CountVowels counts vowels using simple if-condition
+
 func CountVowels(s string) int {
 	count := 0
 	for i := 0; i < len(s); i++ {
