@@ -1,49 +1,121 @@
 package main
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+)
 
-type Student struct {
-	Name string
-	Age  int
+type Item struct {
+	ID       int
+	Name     string
+	Quantity int
+	Price    float64
 }
 
-func inputNumber(ptr *int) {
-	*ptr = 50
+type Inventory struct {
+	items []Item
 }
 
-func modifyValue(ptr *int) {
-	*ptr = *ptr + 10
+type Stats struct {
+	TotalCount int
+	TotalValue float64
 }
 
-func inputStudent(s *Student) {
-	fmt.Print("Enter Student Name: ")
-	fmt.Scan(&s.Name)
-	fmt.Print("Enter Student Age: ")
-	fmt.Scan(&s.Age)
+func (inv *Inventory) AddItem(item Item) error {
+	if item.ID <= 0 {
+		return errors.New("invalid id")
+	}
+	if item.Name == "" {
+		return errors.New("invalid name")
+	}
+	if item.Quantity < 0 {
+		return errors.New("invalid quantity")
+	}
+	if item.Price < 0 {
+		return errors.New("invalid price")
+	}
+	for _, it := range inv.items {
+		if it.ID == item.ID {
+			return errors.New("item already exists")
+		}
+	}
+	inv.items = append(inv.items, item)
+	return nil
+}
+
+func (inv *Inventory) UpdateItem(id int, name string, qty int, price float64) error {
+	if name == "" {
+		return errors.New("invalid name")
+	}
+	if qty < 0 {
+		return errors.New("invalid quantity")
+	}
+	if price < 0 {
+		return errors.New("invalid price")
+	}
+	for i, it := range inv.items {
+		if it.ID == id {
+			inv.items[i].Name = name
+			inv.items[i].Quantity = qty
+			inv.items[i].Price = price
+			return nil
+		}
+	}
+	return errors.New("item not found")
+}
+
+func (inv *Inventory) RemoveItem(id int) error {
+	for i, it := range inv.items {
+		if it.ID == id {
+			inv.items = append(inv.items[:i], inv.items[i+1:]...)
+			return nil
+		}
+	}
+	return errors.New("item not found")
+}
+
+func (inv *Inventory) GetStats() Stats {
+	ch := make(chan Stats)
+	go func() {
+		var count int
+		var value float64
+		for _, it := range inv.items {
+			count += it.Quantity
+			value += float64(it.Quantity) * it.Price
+		}
+		ch <- Stats{TotalCount: count, TotalValue: value}
+	}()
+	return <-ch
 }
 
 func main() {
-	var num int
-	inputNumber(&num)
+	inv := &Inventory{}
 
-	var ptr *int = &num
-	fmt.Println("Original Value:", num)
-	fmt.Println("Address using &:", ptr)
-	fmt.Println("Value accessed using *:", *ptr)
+	err := inv.AddItem(Item{ID: 1, Name: "Book", Quantity: 10, Price: 15.5})
+	if err != nil {
+		fmt.Println("Error:", err)
+	}
 
-	
-	var count int
-	inputNumber(&count)
-	fmt.Println("Value before modifyValue():", count)
-	modifyValue(&count)
-	fmt.Println("Value after modifyValue():", count)
+	err = inv.AddItem(Item{ID: 2, Name: "Pen", Quantity: 20, Price: 2.0})
+	if err != nil {
+		fmt.Println("Error:", err)
+	}
 
-	s := new(Student)
-	fmt.Println("Default Student Name:", s.Name)
-	fmt.Println("Default Student Age:", s.Age)
+	err = inv.UpdateItem(2, "Gel Pen", 25, 2.5)
+	if err != nil {
+		fmt.Println("Error:", err)
+	}
 
-	inputStudent(s)
+	stats := inv.GetStats()
+	fmt.Printf("Total Items: %d\n", stats.TotalCount)
+	fmt.Printf("Total Value: %.2f\n", stats.TotalValue)
 
-	fmt.Println("Modified Student Name:", s.Name)
-	fmt.Println("Modified Student Age:", s.Age)
+	err = inv.RemoveItem(1)
+	if err != nil {
+		fmt.Println("Error:", err)
+	}
+
+	stats = inv.GetStats()
+	fmt.Printf("After Removal - Total Items: %d\n", stats.TotalCount)
+	fmt.Printf("After Removal - Total Value: %.2f\n", stats.TotalValue)
 }
