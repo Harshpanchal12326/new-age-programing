@@ -18,7 +18,7 @@ let getStatus b =
 let books = [
     { Id = 1; Title = "art of lazyness"; Pages = 250; Available = true }
     { Id = 2; Title = "harry-potter"; Pages = 400; Available = false }
-    { Id = 3; Title = "journey to the end of the earth"; Pages = 400; Available = false }
+    { Id = 3; Title = "journey to the end of the earth"; Pages = 400; Available = true }
 ]
 
 let availableBooks = books |> List.filter (fun b -> b.Available)
